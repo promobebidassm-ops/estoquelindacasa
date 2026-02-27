@@ -47,34 +47,19 @@ export function SellDialog({ product, open, onOpenChange }: SellDialogProps) {
     }
   }, [open]);
 
+  // move the actual status update to the final step so the product doesn't disappear
+  // from the list while the user is still filling the address (which causes the
+  // dialog to unmount). the first button now simply validates and shows the
+  // address form.
   const handleSell = () => {
     if (!price || (typeof price === "number" && price <= 0)) {
       alert("Preencha um preço de venda válido.");
       return;
     }
 
-    try {
-      // Marca como vendido no contexto
-      console.log('[SellDialog] Iniciando venda do produto:', product.id, product.name);
-      updateProductStatus(
-        product.id,
-        "Vendido",
-        sellerUser,
-        `Vendido na unidade ${sellUnit}`,
-        sellerUser,
-        sellUnit,
-        undefined,
-        typeof price === "number" && !isNaN(price) ? price : undefined,
-      );
-      console.log('[SellDialog] updateProductStatus chamado');
-
-      // Mostra o formulário de endereço inline
-      setShowSellForm(false);
-      console.log('[SellDialog] venda registrada, exibindo formulário de endereço');
-    } catch (error) {
-      console.error('Erro ao registrar venda:', error);
-      alert('Erro ao registrar a venda. Verifique o console para detalhes.');
-    }
+    // don't touch the context yet, only flip the view
+    setShowSellForm(false);
+    console.log('[SellDialog] preço válido, abrindo formulário de endereço');
   };
 
 
@@ -240,26 +225,45 @@ export function SellDialog({ product, open, onOpenChange }: SellDialogProps) {
                   setShowSellForm(true);
                 }} disabled={isSaving}>Voltar</Button>
                 <Button onClick={() => {
-                  // Salvar endereço e fechar tudo
+                  // Salvar endereço e finalizar fluxo (realiza venda agora)
                   if (!address.trim()) { alert('Preencha o endereço completo do cliente.'); return; }
                   if (type === 'Apartamento' && !floor.trim()) { alert('Preencha o andar do apartamento.'); return; }
                   setIsSaving(true);
-                  // Passa o vendedor selecionado como user
-                  setDeliveryInfo(
-                    product.id,
-                    address.trim(),
-                    sellerUser,
-                    referencePoint || undefined,
-                    type,
-                    floor || undefined,
-                    type === 'Apartamento' ? access : undefined
-                  );
-                  // Fecha imediatamente (setDeliveryInfo atualiza estado sincrono localmente)
-                  setIsSaving(false);
+
+                  try {
+                    // primeiro atualiza o status do produto
+                    updateProductStatus(
+                      product.id,
+                      "Vendido",
+                      sellerUser,
+                      `Vendido na unidade ${sellUnit}`,
+                      sellerUser,
+                      sellUnit,
+                      undefined,
+                      typeof price === "number" && !isNaN(price) ? price : undefined,
+                    );
+                    // em seguida registra as informações de entrega
+                    setDeliveryInfo(
+                      product.id,
+                      address.trim(),
+                      sellerUser,
+                      referencePoint || undefined,
+                      type,
+                      floor || undefined,
+                      type === 'Apartamento' ? access : undefined
+                    );
+                  } catch (error) {
+                    console.error('Erro ao finalizar venda:', error);
+                    alert('Erro ao finalizar a venda. Confira o console.');
+                  } finally {
+                    setIsSaving(false);
+                  }
+
+                  // volta para o estado inicial e fecha o modal
                   setShowSellForm(true);
-                              setLocalOpen(false);
-                              onOpenChange(false);
-                            }} disabled={isSaving || !address.trim()}>
+                  setLocalOpen(false);
+                  onOpenChange(false);
+                }} disabled={isSaving || !address.trim()}>
                   {isSaving ? 'Salvando...' : 'Salvar e Finalizar'}
                 </Button>
               </DialogFooter>
