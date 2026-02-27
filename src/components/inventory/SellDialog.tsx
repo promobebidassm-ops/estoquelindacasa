@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { RouteViewer } from "./RouteViewer";
 const units: StoreUnit[] = ["Shopping Praça Nova", "Camobi", "Estoque"];
 
 interface SellDialogProps {
@@ -222,17 +221,14 @@ export function SellDialog({ product, open, onOpenChange }: SellDialogProps) {
                 )}
 
                 {address.trim() && (
-                  <div className="mt-2 space-y-3">
-                    <div>
-                      <Label>Visualização no mapa</Label>
-                      <div className="h-48 w-full border rounded-md overflow-hidden mt-2 border-white/20 dark:border-white/10">
-                        <iframe title="map" src={`https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`} width="100%" height="100%" style={{ border: 'none' }} />
-                      </div>
-                      <div className="mt-2">
-                        <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noreferrer" className="text-primary underline hover:no-underline transition-smooth text-sm">Abrir no Google Maps</a>
-                      </div>
+                  <div className="mt-2">
+                    <Label>Visualização no mapa</Label>
+                    <div className="h-48 w-full border rounded-md overflow-hidden mt-2 border-white/20 dark:border-white/10">
+                      <iframe title="map" src={`https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`} width="100%" height="100%" style={{ border: 'none' }} />
                     </div>
-                    <RouteViewer address={address} productName={updatedProduct.name} />
+                    <div className="mt-2">
+                      <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`} target="_blank" rel="noreferrer" className="text-primary underline hover:no-underline transition-smooth text-sm">Abrir no Google Maps</a>
+                    </div>
                   </div>
                 )}
               </div>
