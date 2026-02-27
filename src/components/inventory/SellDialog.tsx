@@ -29,6 +29,7 @@ export function SellDialog({ product, open, onOpenChange }: SellDialogProps) {
   const [address, setAddress] = useState("");
   const [referencePoint, setReferencePoint] = useState("");
   const [type, setType] = useState<"Casa" | "Apartamento">("Casa");
+  const [apartmentNumber, setApartmentNumber] = useState("");
   const [floor, setFloor] = useState("");
   const [access, setAccess] = useState<"Escada" | "Elevador">("Escada");
   const [isSaving, setIsSaving] = useState(false);
@@ -42,6 +43,7 @@ export function SellDialog({ product, open, onOpenChange }: SellDialogProps) {
       setAddress("");
       setReferencePoint("");
       setType("Casa");
+      setApartmentNumber("");
       setFloor("");
       setAccess("Escada");
     }
@@ -182,6 +184,17 @@ export function SellDialog({ product, open, onOpenChange }: SellDialogProps) {
                 {type === "Apartamento" && (
                   <>
                     <div className="space-y-2">
+                      <Label>Número do Apartamento *</Label>
+                      <input
+                        className="w-full rounded-lg border bg-card/70 backdrop-blur-md px-3 py-2 text-sm border-white/20 dark:border-white/10 transition-smooth focus:outline-none focus:ring-2 focus:ring-ring"
+                        value={apartmentNumber}
+                        onChange={e => setApartmentNumber(e.target.value)}
+                        placeholder="Ex: 101, 202, 305, etc."
+                        disabled={isSaving}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
                       <Label>Andar *</Label>
                       <input
                         className="w-full rounded-lg border bg-card/70 backdrop-blur-md px-3 py-2 text-sm border-white/20 dark:border-white/10 transition-smooth focus:outline-none focus:ring-2 focus:ring-ring"
@@ -227,6 +240,7 @@ export function SellDialog({ product, open, onOpenChange }: SellDialogProps) {
                 <Button onClick={() => {
                   // Salvar endereço e finalizar fluxo (realiza venda agora)
                   if (!address.trim()) { alert('Preencha o endereço completo do cliente.'); return; }
+                  if (type === 'Apartamento' && !apartmentNumber.trim()) { alert('Preencha o número do apartamento.'); return; }
                   if (type === 'Apartamento' && !floor.trim()) { alert('Preencha o andar do apartamento.'); return; }
                   setIsSaving(true);
 
@@ -249,6 +263,7 @@ export function SellDialog({ product, open, onOpenChange }: SellDialogProps) {
                       sellerUser,
                       referencePoint || undefined,
                       type,
+                      apartmentNumber || undefined,
                       floor || undefined,
                       type === 'Apartamento' ? access : undefined
                     );
