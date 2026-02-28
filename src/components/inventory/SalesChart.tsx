@@ -3,7 +3,7 @@ import { useInventory } from "@/contexts/InventoryContext";
 import { useTheme } from "@/hooks/useTheme";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Calendar } from "lucide-react";
+import { ChevronDown, Calendar, Eye, EyeOff } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,6 +38,7 @@ export function SalesChart() {
   const [customStartDate, setCustomStartDate] = useState<string>();
   const [customEndDate, setCustomEndDate] = useState<string>();
   const [showCustomDates, setShowCustomDates] = useState(false);
+  const [showData, setShowData] = useState(false);
   const isDark = theme === "dark";
 
   const chartData = useMemo(() => {
@@ -244,7 +245,18 @@ export function SalesChart() {
     <div className="rounded-xl border bg-card/70 backdrop-blur-md p-3 sm:p-5 shadow-sm border-white/20 dark:border-white/10 transition-smooth hover:shadow-md">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-3 sm:gap-0 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="font-display text-base sm:text-lg font-semibold">Vendas</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="font-display text-base sm:text-lg font-semibold">Vendas</h2>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setShowData(!showData)}
+              className="h-8 w-8"
+              title={showData ? "Esconder dados" : "Mostrar dados"}
+            >
+              {showData ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </Button>
+          </div>
           <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -327,7 +339,7 @@ export function SalesChart() {
         )}
       </div>
 
-      <div className="w-full h-64 sm:h-80 md:h-96 mt-6">
+      <div className={`w-full h-64 sm:h-80 md:h-96 mt-6 transition-all ${!showData ? 'blur-sm' : ''}`}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={chartData}
