@@ -186,6 +186,7 @@ export default function Entregas() {
               </div>
             )}
           </div>
+        </div>
 
         {/* Entregas Pendentes */}
         <div>
