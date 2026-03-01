@@ -104,11 +104,11 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={toggleFullscreen} className="h-9 w-9" title={isFullscreen ? "Sair da tela cheia" : "Tela cheia"}>
+            <Button variant="ghost" size="icon" onClick={toggleFullscreen} className="h-9 w-9 rounded-full" title={isFullscreen ? "Sair da tela cheia" : "Tela cheia"}>
               {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
             </Button>
 
-            <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-9 w-9">
+            <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-9 w-9 rounded-full">
               {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
             </Button>
             
@@ -117,7 +117,7 @@ export function Header() {
               variant="ghost" 
               size="icon" 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="h-9 w-9 md:hidden"
+              className="h-9 w-9 rounded-full md:hidden"
             >
               {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
             </Button>
