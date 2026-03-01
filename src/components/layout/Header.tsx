@@ -65,7 +65,7 @@ export function Header() {
         />
       )}
       
-      <header className="sticky top-0 z-50 glass">
+      <header className="fixed top-0 left-0 right-0 z-50 glass md:sticky">
         <div className="container flex h-16 items-center justify-between">
           <Link to="/" className="flex flex-col items-center">
             <img src={theme === "light" ? "/logolcb.png" : "/logolc.png"} alt="Linda Casa Logo" className="h-10 w-auto object-contain" />
@@ -160,6 +160,9 @@ export function Header() {
           </div>
         )}
       </header>
+
+      {/* spacer para evitar que conteúdo fique sob o header quando fixo em mobile */}
+      <div className="md:hidden h-16" />
 
       <LoginDialog open={loginOpen} onOpenChange={setLoginOpen} />
     </>
