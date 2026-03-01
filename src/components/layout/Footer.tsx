@@ -5,7 +5,7 @@ export function Footer() {
   const textColor = theme === "light" ? "text-black" : "text-muted-foreground";
   
   return (
-    <footer className="glass-card rounded-t-none relative z-50">
+    <footer className="glass border-t relative z-50">
       <div className="container flex flex-col items-center justify-between gap-4 py-6 md:flex-row">
         <div className={`flex items-center gap-2 text-sm ${textColor}`}>
           <img src={theme === "light" ? "/logolcb.png" : "/logolc.png"} alt="Linda Casa Logo" className="h-5 w-auto object-contain" />

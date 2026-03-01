@@ -24,7 +24,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   const { theme } = useTheme();
   const bgUrl = theme === "dark" ? darkUrl : lightUrl;
 
-  const bgStyle: React.CSSProperties = {
+  const mainStyle: React.CSSProperties = {
     backgroundImage: `url(${bgUrl})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
@@ -32,9 +32,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="flex min-h-screen flex-col" style={bgStyle}>
+    <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-1 bg-transition">
+      <main className="flex-1 bg-transition" style={mainStyle}>
         <div className="container mx-auto px-4 sm:px-6">{children}</div>
       </main>
       <Footer />
