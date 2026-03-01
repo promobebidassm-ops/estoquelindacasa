@@ -249,7 +249,7 @@ export function SalesChart() {
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-2 right-2 p-1"
+          className="absolute top-2 right-2 p-1 rounded-full"
           onClick={() => setCollapsed(!collapsed)}
           title={collapsed ? 'Expandir' : 'Recolher'}
         >
