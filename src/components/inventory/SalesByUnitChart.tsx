@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useInventory } from "@/contexts/InventoryContext";
 import { useTheme } from "@/hooks/useTheme";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 
@@ -11,10 +11,11 @@ export function SalesByUnitChart() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const [showData, setShowData] = useState(false);
+  const [collapsed, setCollapsed] = useState(true); // start collapsed
 
   // Cores vivas para cada unidade
   const UNIT_COLORS: Record<string, string> = {
-    "Shopping Praça Nova": "#FF6B6B", // Vermelho vibrante
+    "Shopping Praça Nova": "#0011c9", // Vermelho vibrante
     "Camobi": "#4ECDC4", // Turquesa
     "Estoque": "#FFE66D", // Amarelo brilhante
   };
@@ -54,10 +55,20 @@ export function SalesByUnitChart() {
   const gridColor = isDark ? "#334155" : "#E2E8F0";
 
   return (
-    <div className="rounded-xl border bg-card/70 backdrop-blur-md p-3 sm:p-5 shadow-sm border-white/20 dark:border-white/10 transition-smooth hover:shadow-md">
+    <div className="relative">
+      <div className={`${isDark ? 'relative rounded-xl border bg-card/70 backdrop-blur-md border-white/20 dark:border-white/10' : 'glass-card'} p-3 sm:p-5 ${collapsed ? 'max-h-44 overflow-hidden' : 'max-h-none'}`}>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute top-2 right-2 p-1"
+          onClick={() => setCollapsed(!collapsed)}
+          title={collapsed ? 'Expandir' : 'Recolher'}
+        >
+          <ChevronDown className={`h-5 w-5 transition-transform ${collapsed ? '' : 'rotate-180'}`} />
+        </Button>
       <div className="flex flex-col gap-3 sm:gap-0 sm:flex-row sm:items-center sm:justify-between mb-4">
         <div className="flex items-center gap-2">
-          <h2 className="font-display text-base sm:text-lg font-semibold">Vendas por Unidade</h2>
+          <h2 className="font-display text-base sm:text-lg font-semibold">Unidade</h2>
           <Button 
             variant="ghost" 
             size="icon" 
@@ -75,8 +86,8 @@ export function SalesByUnitChart() {
           Nenhuma venda registrada.
         </p>
       ) : (
-        <div className={`flex flex-col lg:flex-row items-center gap-4 transition-all ${!showData ? 'blur-sm' : ''}`}>
-          <ResponsiveContainer width="100%" height={300}>
+        <div className={`flex flex-col lg:flex-row items-center gap-4 transition-all ${collapsed ? 'blur-sm' : ''} ${!showData ? 'blur-sm' : ''}`}>
+          <ResponsiveContainer width="100%" height={collapsed ? 100 : 300}>
             <PieChart margin={{ top: 10, right: 10, bottom: 10, left: 10 }}>
               <Pie
                 data={dataWithPercentage}
@@ -147,5 +158,6 @@ export function SalesByUnitChart() {
         </div>
       )}
     </div>
+  </div>
   );
 }

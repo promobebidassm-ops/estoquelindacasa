@@ -113,39 +113,68 @@ export default {
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "var(--radius)",
-        xl: "var(--radius)",
-        sm: "calc(var(--radius) - 4px)",
+        sm: "var(--radius-sm)",
+        md: "var(--radius-md)",
+        lg: "var(--radius-lg)",
+        xl: "var(--radius-xl)",
       },
-      /* enforce 8px spacing grid by remapping the spacing scale */
+      /* Design System Spacing Scale (4px base) */
       spacing: {
         px: "1px",
         0: "0px",
-        /* 1 unit = 0.5rem (8px) */
-        0.5: "0.125rem", // keeps the tiny step if needed
-        1: "0.5rem",     // 8px
-        2: "1rem",       // 16px
-        3: "1.5rem",     // 24px
-        4: "2rem",       // 32px
-        5: "2.5rem",     // 40px
-        6: "3rem",       // 48px
-        7: "3.5rem",     // 56px
-        8: "4rem",       // 64px
-        9: "4.5rem",     // 72px
-        10: "5rem",      // 80px
-        /* add more steps as needed */
+        "0.25": "1px",
+        0.5: "2px",
+        1: "4px",       /* --spacing-xs */
+        1.5: "6px",
+        2: "8px",       /* --spacing-sm */
+        2.5: "10px",
+        3: "12px",
+        3.5: "14px",
+        4: "16px",      /* --spacing-md */
+        5: "20px",
+        6: "24px",      /* --spacing-lg */
+        7: "28px",
+        8: "32px",      /* --spacing-xl */
+        9: "36px",
+        10: "40px",
+        11: "44px",
+        12: "48px",     /* --spacing-2xl */
+        14: "56px",
+        16: "64px",
+        20: "80px",
+        24: "96px",
+        28: "112px",
+        32: "128px",
+        36: "144px",
+        40: "160px",
+        44: "176px",
+        48: "192px",
+        52: "208px",
+        56: "224px",
+        60: "240px",
+        64: "256px",
+        72: "288px",
+        80: "320px",
+        96: "384px",
       },
-      /* define a set of fixed shadows for consistency */
+      /* Design System Shadow System */
       boxShadow: {
-        sm: "0 1px 2px rgba(0,0,0,0.05)",
-        DEFAULT: "0 1px 3px rgba(0,0,0,0.1)",
-        md: "0 4px 6px rgba(0,0,0,0.1)",
-        lg: "0 10px 15px rgba(0,0,0,0.1)",
-        xl: "0 20px 25px rgba(0,0,0,0.1)",
-        "2xl": "0 25px 50px rgba(0,0,0,0.25)",
-        inner: "inset 0 2px 4px rgba(0,0,0,0.06)",
         none: "none",
+        sm: "var(--shadow-sm)",
+        DEFAULT: "0 1px 3px rgba(0,0,0,0.1)",
+        md: "var(--shadow-md)",
+        lg: "var(--shadow-lg)",
+        xl: "var(--shadow-xl)",
+        inner: "inset 0 2px 4px rgba(0,0,0,0.06)",
+        /* Glass effects */
+        glass: "0 8px 24px rgba(0, 0, 0, 0.08)",
+      },
+      backdropBlur: {
+        none: "0",
+        sm: "blur(4px)",
+        DEFAULT: "blur(12px)",
+        md: "blur(16px)",
+        lg: "blur(20px)",
       },
       keyframes: {
         "accordion-down": {

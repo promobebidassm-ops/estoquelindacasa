@@ -56,10 +56,10 @@ export function StatsCards() {
             tabIndex={isClickable ? 0 : undefined}
             onClick={isClickable ? handleClick : undefined}
             onKeyDown={isClickable ? (e: React.KeyboardEvent) => { if (e.key === "Enter" || e.key === " ") handleClick(); } : undefined}
-            className={`animate-fade-in relative rounded-xl border bg-card/70 backdrop-blur-md p-3 sm:p-5 shadow-sm border-white/20 dark:border-white/10 transition-smooth h-24 sm:h-28 flex flex-col justify-between ${isClickable ? "cursor-pointer hover:shadow-md focus:outline-none focus:ring-2 focus:ring-ring" : ""}`}
+            className={`animate-fade-in relative rounded-xl border bg-card/70 backdrop-blur-md p-2 sm:p-3 shadow-sm border-white/20 dark:border-white/10 transition-smooth h-24 sm:h-28 flex flex-col justify-between ${isClickable ? "cursor-pointer hover:shadow-md focus:outline-none focus:ring-2 focus:ring-ring" : ""}`}
           >
             <span className="text-xs sm:text-sm font-medium text-muted-foreground line-clamp-2">{card.label}</span>
-            <div className="flex justify-between items-end">
+            <div className="flex justify-between items-center">
               <Icon className={`h-5 w-5 sm:h-6 sm:w-6 ${card.color}`} />
               <p className={`font-display text-3xl sm:text-5xl font-bold ${card.color}`}>{card.value}</p>
             </div>
@@ -75,10 +75,10 @@ export function StatsCards() {
             tabIndex={0}
             onClick={() => navigate(`/produtos?unit=${encodeURIComponent(unit)}`)}
             onKeyDown={e => { if (e.key === "Enter" || e.key === " ") navigate(`/produtos?unit=${encodeURIComponent(unit)}`); }}
-            className="animate-fade-in relative cursor-pointer rounded-xl border bg-card/70 backdrop-blur-md p-3 sm:p-4 shadow-sm border-white/20 dark:border-white/10 transition-smooth hover:shadow-md focus:outline-none focus:ring-2 focus:ring-ring h-24 sm:h-28 flex flex-col justify-between"
+            className="animate-fade-in relative cursor-pointer rounded-xl border bg-card/70 backdrop-blur-md p-2 sm:p-3 shadow-sm border-white/20 dark:border-white/10 transition-smooth hover:shadow-md focus:outline-none focus:ring-2 focus:ring-ring h-24 sm:h-28 flex flex-col justify-between"
           >
             <p className="text-xs font-medium text-muted-foreground line-clamp-2">{unit}</p>
-            <div className="flex justify-between items-end">
+            <div className="flex justify-between items-center">
               <div className="flex h-6 sm:h-7 w-6 sm:w-7 items-center justify-center rounded-lg bg-accent">
                 <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-accent-foreground" />
               </div>

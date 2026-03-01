@@ -7,6 +7,7 @@ import { ScheduleDeliveryDialog } from "@/components/inventory/ScheduleDeliveryD
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Filter } from "lucide-react";
 
 export default function Entregas() {
   const { products, markDelivered } = useInventory();
@@ -18,6 +19,7 @@ export default function Entregas() {
   // Filtros
   const [filterDate, setFilterDate] = useState<string>("");
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
+  const [showFilters, setShowFilters] = useState(false);
 
   const entregasPendentes = products.filter(p => p.deliveryAddress && p.deliveryStatus !== "Entregue");
   const historicoEntregas = products.filter(p => p.deliveryAddress && p.deliveryStatus === "Entregue");
@@ -111,8 +113,9 @@ export default function Entregas() {
           )}
         </div>
       </div>
-      {expandable && delivering === p.id && (
-        <div className="mt-3">
+      {/* expandable map with smooth toggle */}
+      {expandable && (
+        <div className={`mt-3 toggleable ${delivering === p.id ? "open" : ""}`}>
           <iframe title="map-details" src={`https://www.google.com/maps?q=${encodeURIComponent(p.deliveryAddress || "")}&output=embed`} width="100%" height={240} className="rounded-lg" />
           <div className="mt-2 flex gap-2 flex-col sm:flex-row">
             <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.deliveryAddress || "")}`} target="_blank" rel="noreferrer" className="text-primary underline text-xs sm:text-sm hover:no-underline transition-smooth">Abrir no Maps</a>
@@ -125,56 +128,68 @@ export default function Entregas() {
 
   return (
     <AppLayout>
-      <div className="container py-4 sm:py-6 space-y-6 sm:space-y-8">
-        <h1 className="font-display text-2xl sm:text-3xl font-bold mb-4">Entregas</h1>
-
-        {/* Filtros */}
-        <div className="bg-card/70 backdrop-blur-md border border-white/20 dark:border-white/10 rounded-lg p-4 space-y-4">
-          <h3 className="font-semibold text-sm sm:text-base">Filtros de Entregas Pendentes</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="filter-date" className="text-xs sm:text-sm">Filtrar por Data de Venda</Label>
-              <Input
-                id="filter-date"
-                type="date"
-                value={filterDate}
-                onChange={(e) => setFilterDate(e.target.value)}
-                className="text-xs sm:text-sm"
-              />
-              {filterDate && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setFilterDate("")}
-                  className="text-xs"
-                >
-                  Limpar filtro
-                </Button>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="sort-order" className="text-xs sm:text-sm">Ordenar por Data</Label>
-              <Select value={sortOrder} onValueChange={(value: any) => setSortOrder(value)}>
-                <SelectTrigger id="sort-order" className="text-xs sm:text-sm">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="newest">Mais Recentes Primeiro</SelectItem>
-                  <SelectItem value="oldest">Mais Antigos Primeiro</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+      <div className="container py-2 sm:py-4 space-y-4 sm:space-y-6">
+        {/* header + filtros (menos espaçamento entre eles) */}
+        <div className="space-y-1">
+          <div className="flex items-center gap-3">
+            <h1 className="font-display text-2xl sm:text-3xl font-bold m-0">Entregas</h1>
+            <Button variant="outline" size="sm" className="gap-2" onClick={() => setShowFilters(v => !v)}>
+              <Filter className="w-4 h-4" />
+              <span className="sr-only">Abrir filtros</span>
+            </Button>
           </div>
-          {filterDate && (
-            <div className="text-xs sm:text-sm text-slate-700 dark:text-muted-foreground">
-              Mostrando {filteredAndSortedEntregas.length} entrega(s) para a data {new Date(filterDate).toLocaleDateString("pt-BR")}
+
+          {/* Filtros com controle expansível */}
+          {/* animated filter card */}
+          <div className={
+            `toggleable bg-card/70 backdrop-blur-md border border-white/20 dark:border-white/10 rounded-lg p-4 space-y-4`
+            + (showFilters ? " open" : "")
+          }>
+          <h3 className="font-semibold text-sm sm:text-base mt-0">Filtros de Entregas Pendentes</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="filter-date" className="text-xs sm:text-sm">Filtrar por Data de Venda</Label>
+                <Input
+                  id="filter-date"
+                  type="date"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                  className="text-xs sm:text-sm"
+                />
+                {filterDate && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setFilterDate("")}
+                    className="text-xs"
+                  >
+                    Limpar filtro
+                  </Button>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="sort-order" className="text-xs sm:text-sm">Ordenar por Data</Label>
+                <Select value={sortOrder} onValueChange={(value: any) => setSortOrder(value)}>
+                  <SelectTrigger id="sort-order" className="text-xs sm:text-sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="newest">Mais Recentes Primeiro</SelectItem>
+                    <SelectItem value="oldest">Mais Antigos Primeiro</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-          )}
-        </div>
+            {filterDate && (
+              <div className="text-xs sm:text-sm text-slate-700 dark:text-muted-foreground">
+                Mostrando {filteredAndSortedEntregas.length} entrega(s) para a data {new Date(filterDate).toLocaleDateString("pt-BR")}
+              </div>
+            )}
+          </div>
 
         {/* Entregas Pendentes */}
         <div>
-          <h2 className="font-semibold text-lg sm:text-xl mb-3 sm:mb-4">
+          <h2 className="font-semibold text-lg sm:text-xl mb-1 sm:mb-2">
             Entregas Pendentes ({filteredAndSortedEntregas.length})
           </h2>
           {filteredAndSortedEntregas.length === 0 ? (

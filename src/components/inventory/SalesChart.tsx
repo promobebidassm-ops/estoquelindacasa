@@ -39,6 +39,7 @@ export function SalesChart() {
   const [customEndDate, setCustomEndDate] = useState<string>();
   const [showCustomDates, setShowCustomDates] = useState(false);
   const [showData, setShowData] = useState(false);
+  const [collapsed, setCollapsed] = useState(true); // card starts in collapsed mode
   const isDark = theme === "dark";
 
   const chartData = useMemo(() => {
@@ -242,8 +243,19 @@ export function SalesChart() {
   const barColor = isDark ? "#6366f1" : "#4f46e5";
 
   return (
-    <div className="rounded-xl border bg-card/70 backdrop-blur-md p-3 sm:p-5 shadow-sm border-white/20 dark:border-white/10 transition-smooth hover:shadow-md">
-      <div className="flex flex-col gap-4">
+    <div className="relative">
+      <div className={`rounded-xl border bg-card/70 backdrop-blur-md p-2 sm:p-4 shadow-sm border-white/20 dark:border-white/10 transition-smooth hover:shadow-md relative ${collapsed ? 'max-h-36 overflow-hidden' : 'max-h-none'}`}>
+        {/* collapse/expand toggle button */}
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute top-2 right-2 p-1"
+          onClick={() => setCollapsed(!collapsed)}
+          title={collapsed ? 'Expandir' : 'Recolher'}
+        >
+          <ChevronDown className={`h-5 w-5 transition-transform ${collapsed ? '' : 'rotate-180'}`} />
+        </Button>
+        <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-3 sm:gap-0 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2">
             <h2 className="font-display text-base sm:text-lg font-semibold">Vendas</h2>
@@ -257,7 +269,8 @@ export function SalesChart() {
               {showData ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </Button>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+          {!collapsed && (
+            <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -298,6 +311,7 @@ export function SalesChart() {
               </Button>
             )}
           </div>
+          )}
         </div>
 
         {timeRange === "custom" && showCustomDates && (
@@ -339,7 +353,7 @@ export function SalesChart() {
         )}
       </div>
 
-      <div className={`w-full h-64 sm:h-80 md:h-96 mt-6 transition-all ${!showData ? 'blur-sm' : ''}`}>
+      <div className={`w-full mt-6 transition-all ${collapsed ? 'h-16' : 'h-64 sm:h-80 md:h-96'} ${(collapsed || !showData) ? 'blur-sm' : ''}`}> 
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={chartData}
@@ -377,6 +391,7 @@ export function SalesChart() {
             />
           </BarChart>
         </ResponsiveContainer>
+      </div>
       </div>
     </div>
   );
