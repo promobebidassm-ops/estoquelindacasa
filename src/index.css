@@ -621,4 +621,54 @@
     max-height: 1000px; /* sufficiently large for content */
     opacity: 1;
   }
+
+  /* ─────────────────────────────────────
+     INTERACTIVE BASE - Padroniza feedback
+     ─────────────────────────────────────
+     - Use `.interactive` em elementos custom quando possível
+     - Também aplica a botões, links, triggers e chips comuns
+     - Estado ativo visível APENAS enquanto o usuário pressiona (:active)
+  */
+
+  .interactive,
+  button,
+  a[href],
+  [role="button"],
+  .chip,
+  .tab-trigger,
+  .btn-primary,
+  .btn-secondary,
+  .btn-ghost,
+  [data-clickable] {
+    cursor: pointer;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+    will-change: transform;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+  }
+
+  .interactive:active,
+  button:active,
+  a[href]:active,
+  [role="button"]:active,
+  .chip:active,
+  .tab-trigger:active,
+  .btn-primary:active,
+  .btn-secondary:active,
+  .btn-ghost:active,
+  [data-clickable]:active {
+    transform: scale(0.985);
+    filter: brightness(0.97);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Não aplicar transform em elementos desabilitados */
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+    transform: none !important;
+    filter: none !important;
+    box-shadow: none !important;
+  }
 }
