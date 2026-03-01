@@ -65,7 +65,7 @@ export function Header() {
         />
       )}
       
-      <header className="fixed top-0 left-0 right-0 z-50 glass md:sticky">
+      <header className="fixed top-0 left-0 right-0 z-50 glass-card rounded-b-none md:sticky">
         <div className="container flex h-16 items-center justify-between">
           <Link to="/" className="flex flex-col items-center">
             <img src={theme === "light" ? "/logolcb.png" : "/logolc.png"} alt="Linda Casa Logo" className="h-10 w-auto object-contain" />
